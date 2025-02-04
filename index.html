@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldX - Будущее твоих возможностей</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            text-align: center;
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(90deg, #1a1f27, #161b22);
+            padding: 20px;
+            font-size: 3rem; /* Увеличен размер шрифта */
+            font-weight: bold;
+            color: #58a6ff;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 0 15px rgba(88, 166, 255, 0.9), 0 0 30px rgba(88, 166, 255, 0.5); /* Добавлены тени */
+            font-family: 'Orbitron', sans-serif;
+        }
+        nav {
+            padding: 10px;
+            background: #161b22;
+            text-align: center;
+        }
+        nav a {
+            color: #58a6ff;
+            margin: 0 30px; /* Увеличено расстояние между ссылками */
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        nav a:hover {
+            text-shadow: 0 0 12px rgba(88, 166, 255, 1);
+        }
+        .container {
+            padding: 50px 20px;
+            position: relative;
+            z-index: 10;
+            overflow-y: auto; /* Добавлено для прокрутки */
+            max-height: 100vh; /* Ограничение высоты контейнера */
+        }
+        .section {
+            margin: 80px auto; /* Увеличено расстояние между секциями */
+            padding: 40px;
+            max-width: 900px;
+            border-radius: 12px;
+            background: rgba(33, 38, 45, 0.95);
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.6);
+            transition: transform 0.3s; /* Плавный переход для увеличения */
+        }
+        .section:hover {
+            transform: scale(1.01); /* Увеличение секции при наведении */
+        }
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px; /* Увеличено расстояние под заголовками */
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 20px; /* Увеличено расстояние над заголовками */
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6; /* Увеличено расстояние между строками */
+            margin-bottom: 20px; /* Увеличено расстояние под абзацами */
+        }
+        .cta {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, #238636, #2ea043);
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(35, 134, 54, 0.8);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .cta:hover {
+            background: #2ea043;
+            box-shadow: 0 0 25px rgba(35, 134, 54, 1);
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <header>WorldX - Технологии без границ</header>
+    <nav>
+        <a href="#about">О нас</a>
+        <a href="#industries">Индустрии</a>
+        <a href="#contact">Контакты</a>
+    </nav>
+    <div class="container">
+        <div class="section" id="about">
+            <h1>О нас</h1>
+            <p><strong>WorldX</strong> — это современная система, объединяющая <strong>Игры</strong>, <strong>Здоровье</strong> и <strong>Обучение</strong>. Мы создаем инновационные сервисы, которые делают вашу жизнь проще, удобнее и продуктивнее.</p>
+        </div>
+        <div class="section" id="industries">
+            <h1>Наши индустрии</h1>
+            <p><strong>🎮 Игры:</strong> Доступ к премиум-контенту, покупка аккаунтов, профессиональное обучение.</p>
+            <p><strong>🏋️‍♂️ Здоровье:</strong> Авторские фитнес-программы, советы по питанию, персональные тренеры.</p>
+            <p><strong>📚 Обучение:</strong> Развитие навыков, курсы от экспертов, наставничество и карьера.</p>
+        </div>
+        <div class="section" id="contact">
+            <h1>Контакты</h1>
+            <p>by Alexander Drenkov<p>
+            <p>Email: drenkovv@gmail.com</p>
+            <p>Телефон:+996 (000) 000-00-00</p>
+            <a href="#" class="cta">Связаться с нами</a>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById("particles");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.02;
+            }
+            draw() {
+                ctx.fillStyle = "rgba(88, 166, 255, 0.8)";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < 120; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    particlesArray.push(new Particle());
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        init();
+        animate();
+    </script>
+</body>
+</html>
